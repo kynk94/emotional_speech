@@ -1,10 +1,21 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { makeStyles } from "@material-ui/styles"
+import React from "react"
+
+import TextInput from './textInput'
+import logo from "./logo.svg"
+import "./App.css"
+
+const useStyles = makeStyles((theme) => ({
+  app: {
+    alignItems: "center"
+  }
+}))
 
 function App() {
+  const classes = useStyles()
+
   return (
-    <div className="App">
+    <div className={classes.app}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -18,6 +29,7 @@ function App() {
         >
           Learn React
         </a>
+        {TextInput({asd: 'ss'})}
       </header>
     </div>
   )

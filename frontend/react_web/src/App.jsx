@@ -1,8 +1,10 @@
 import { makeStyles } from "@material-ui/styles"
 import React from "react"
-
+ 
 import TextInput from './textInput'
-import logo from "./logo.svg"
+import DiscreteSlider from './slider'
+import ContainedButtons from './submit'
+import logo from "./emotion_chart.png"
 import "./App.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -19,17 +21,14 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <code>Emotion - Slider</code> 
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {TextInput({asd: 'ss'})}
+ 
+        {TextInput({asd: 'aa'})}
+        <br></br>
+        <br></br>
+        {DiscreteSlider()}
+        {ContainedButtons()}
       </header>
     </div>
   )

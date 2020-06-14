@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
@@ -35,26 +35,8 @@ const marks = [
   }
 ]
 
-export default function DiscreteSlider() {
+export default function DiscreteSlider({ value, onUpdate }) {
   const classes = useStyles()
-  const [value, setValue] = useState(50)
-
-  /*  const handle = {
-    position: "absolute",
-    transform: 'translate(-50%, -50%)',
-    width: "14px",
-    height: "14px",
-    cursor: "pointer",
-    borderRadius: "50%",
-    border: "solid 2px #000",
-    backgroundColor: "#fff"
-};
-*/
-  /*const handleStyle = Object.assign({left : `${this.props.offset}%`},handle)*/
-
-  const handleChange = useCallback((event, newValue) => {
-    setValue(newValue)
-  }, [])
 
   return (
     <div className={classes.root}>
@@ -68,8 +50,7 @@ export default function DiscreteSlider() {
         step={25}
         marks={marks}
         valueLabelDisplay="on"
-        onChange={handleChange}
-        /*onValueChange={(text) =>this.setText({SliderValue : changedValue})} */
+        onChange={onUpdate}
       />
     </div>
   )

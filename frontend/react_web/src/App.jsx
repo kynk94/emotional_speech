@@ -2,8 +2,7 @@ import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 
 import TextInput from './textInput'
-import DiscreteSlider from './slider'
-import ContainedButtons from './submit'
+import EmotionSlider from './EmotionSlider'
 import logo from './emotion_chart.png'
 import './App.css'
 
@@ -25,8 +24,7 @@ function App() {
         <TextInput asd="aa" />
         <br></br>
         <br></br>
-        <DiscreteSlider />
-        <ContainedButtons />
+        <EmotionSlider />
       </header>
     </div>
   )

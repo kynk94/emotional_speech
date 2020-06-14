@@ -1,13 +1,13 @@
-import { makeStyles } from "@material-ui/styles"
-import React from "react"
+import { makeStyles } from '@material-ui/styles'
+import React from 'react'
 
 import TextInput from './textInput'
-import logo from "./logo.svg"
-import "./App.css"
+import logo from './logo.svg'
+import './App.css'
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    alignItems: "center"
+    alignItems: 'center'
   }
 }))
 
@@ -29,7 +29,7 @@ function App() {
         >
           Learn React
         </a>
-        {TextInput({asd: 'ss'})}
+        <TextInput asd="ss" />
       </header>
     </div>
   )

@@ -5,15 +5,15 @@ import ContainedButtons from './ContainedButtons'
 import DiscreteSlider from './DiscreteSlider'
 
 const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    }
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
 })
 
 export default function EmotionSlider() {
-    const classes = useStyles()
+  const classes = useStyles()
   const [value, setValue] = useState(50)
 
   const handleUpdate = useCallback((event, newValue) => {

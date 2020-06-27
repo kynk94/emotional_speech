@@ -1,43 +1,75 @@
-import React from "react";
-import { Pie } from "react-chartjs-2";
+import { makeStyles } from '@material-ui/styles'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import ApexCharts from 'react-apexcharts'
 
+const useStyles = makeStyles({
+  pie: {
+    position: 'absolute'
+  },
+  text: {
+    position: 'absolute'
+  }
+})
 
-class ChartsPage extends React.Component {
-  state = {
-    dataPie: {
-      labels: ["Anger", "Fear", "Happy", "Sad", "Neutral"],
-      datasets: [
+// function shuffle (a) {
+//   for (let i = a.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [a[i], a[j]] = [a[j], a[i]]
+//   }
+//   return a
+// }
+
+export default function ChartsPage() {
+  const classes = useStyles()
+  const [seconds, setSeconds] = useState(0)
+  const series = useMemo(() => [10, 15, 20, 25, 30], [])
+  const labels = useMemo(() => ['Anger', 'Fear', 'Happy', 'Sad', 'Neutral'], [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(seconds + 1)
+      // setSeries(shuffle(series))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [series, seconds])
+
+  const handleClick = useCallback((chartEle) => {
+    console.log(chartEle)
+    // const eleIndex = chartEle._index
+    // console.log(series[eleIndex], labels[eleIndex])
+  }, [])
+
+  const pieOption = useMemo(() => {
+    return {
+      chart: {
+        width: 380,
+        type: 'pie',
+        events: {
+          click: handleClick
+          // dataPointSelection: handleClick
+        }
+      },
+      labels: labels,
+      responsive: [
         {
-          data: [20, 20, 20, 20, 20],
-          backgroundColor: [
-            "#F7464A",
-            "#46BFBD",
-            "#FDB45C",
-            "#949FB1",
-            "#4D5360",
-            "#AC64AD"
-          ],
-          hoverBackgroundColor: [
-            "#FF5A5E",
-            "#5AD3D1",
-            "#FFC870",
-            "#A8B3C5",
-            "#616774",
-            "#DA92DB"
-          ]
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
         }
       ]
     }
-  }
+  }, [handleClick, labels])
 
-  render() {
-    return (
-        <div>
-        <h3 className="mt-5">Pick emotion</h3>
-        <Pie data={this.state.dataPie} options={{ responsive: true }} />
-        </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <h3>Pick emotion</h3>
+      <ApexCharts options={pieOption} series={series} type="pie" />
+    </div>
+  )
 }
-
-export default ChartsPage;

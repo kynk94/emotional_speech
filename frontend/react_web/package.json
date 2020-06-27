@@ -5,7 +5,11 @@
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/styles": "^4.10.0",
+    "chart.js": "^2.9.3",
+    "core-js": "^3.6.5",
+    "material-ui": "^1.0.0-beta.47",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
   },

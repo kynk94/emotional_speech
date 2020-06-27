@@ -3,6 +3,8 @@ import React from 'react'
 
 import TextInput from './textInput'
 import EmotionSlider from './EmotionSlider'
+import ChartsPage from './pieChart'
+
 import logo from './emotion_chart.png'
 import './App.css'
 
@@ -18,13 +20,16 @@ function App() {
   return (
     <div className={classes.app}>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+       <img src={logo} className="App-logo" alt="logo" />
+        <ChartsPage/>
+        
         <p>Emotion - Slider</p>
 
         <TextInput asd="aa" />
         <br></br>
         <br></br>
         <EmotionSlider />
+       
       </header>
     </div>
   )

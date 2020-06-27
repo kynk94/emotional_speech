@@ -42,34 +42,19 @@ export default function ChartsPage() {
   const pieOption = useMemo(() => {
     return {
       chart: {
-        width: 380,
-        type: 'pie',
         events: {
           click: handleClick
           // dataPointSelection: handleClick
         }
       },
-      labels: labels,
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }
-      ]
+      labels: labels
     }
   }, [handleClick, labels])
 
   return (
     <div className={classes.root}>
       <h3>Pick emotion</h3>
-      <ApexCharts options={pieOption} series={series} type="pie" />
+      <ApexCharts options={pieOption} series={series} type="pie" width={500} />
     </div>
   )
 }

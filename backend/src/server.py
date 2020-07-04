@@ -23,7 +23,7 @@ class Server(EventHandler):
         self._run_server()
 
     def _run_server(self):
-        self._server_thread = Thread(target=self._app.run,
+        self._server_thread = Thread(target=self._app.run, args=['0.0.0.0'],
                                      daemon=True)
         self._server_thread.start()
 
@@ -41,7 +41,7 @@ class Server(EventHandler):
         return
 
     def handle_data(self):
-        speech = request.form.get(key='speech', type=bytes)
+        speech = request.form.get(key='speech', type=str)
         return speech
 
     def handle_result(self):

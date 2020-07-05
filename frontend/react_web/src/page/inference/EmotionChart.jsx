@@ -1,5 +1,6 @@
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import React, { useCallback, useMemo } from 'react'
 import ApexCharts from 'react-apexcharts'
@@ -10,24 +11,33 @@ const useStyles = makeStyles({
   }
 })
 
-export default function EmotionChart({ onUpdate }) {
+export default function EmotionChart({ labels, onUpdate }) {
   const classes = useStyles()
-  const series = useMemo(() => [1, 1, 1, 1, 1], [])
-  const labels = useMemo(() => ['Anger', 'Fear', 'Happy', 'Sad', 'Neutral'], [])
+  const [emotions, colors] = useMemo(() => {
+    const emotionArray = []
+    const colorArray = []
+    _.forEach(labels, (label) => {
+      emotionArray.push(label.emotion)
+      colorArray.push(label.color)
+    })
+    return [emotionArray, colorArray]
+  }, [labels])
+
+  const series = useMemo(() => Array(emotions.length).fill(1), [emotions])
 
   const dataLabelFormatter = useCallback(
     (value, { seriesIndex }) => {
-      return labels[seriesIndex]
+      return emotions[seriesIndex]
     },
-    [labels]
+    [emotions]
   )
 
   const handleSelection = useCallback(
     (event, chartContext, config) => {
       const index = config.dataPointIndex
-      onUpdate(labels[index])
+      onUpdate(emotions[index])
     },
-    [labels, onUpdate]
+    [emotions, onUpdate]
   )
 
   const chartOption = useMemo(() => {
@@ -37,13 +47,14 @@ export default function EmotionChart({ onUpdate }) {
           dataPointSelection: handleSelection
         }
       },
+      colors: colors,
       dataLabels: {
         formatter: dataLabelFormatter,
         style: {
           fontSize: '16px'
         }
       },
-      labels: labels,
+      labels: emotions,
       legend: {
         labels: {
           colors: '#ffffff'
@@ -53,7 +64,7 @@ export default function EmotionChart({ onUpdate }) {
         enabled: false
       }
     }
-  }, [dataLabelFormatter, handleSelection, labels])
+  }, [colors, dataLabelFormatter, emotions, handleSelection])
 
   return (
     <div>
@@ -66,5 +77,6 @@ export default function EmotionChart({ onUpdate }) {
 }
 
 EmotionChart.propTypes = {
+  labels: PropTypes.array.isRequired,
   onUpdate: PropTypes.func.isRequired
 }

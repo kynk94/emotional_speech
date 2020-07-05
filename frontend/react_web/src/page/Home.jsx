@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 
 import Inference from './inference/Inference'
+import Intro from './intro/Intro'
 import TitleBar from './titlebar/TitleBar'
 
 const useStyles = makeStyles({
@@ -12,7 +13,7 @@ const useStyles = makeStyles({
   },
   content: {
     marginTop: 40,
-    overflow: 'scroll'
+    overflow: 'auto'
   }
 })
 
@@ -22,7 +23,8 @@ export default function Home() {
   return (
     <div className={classes.root}>
       <TitleBar />
-      <div className={classes.content}>
+      <div className={classes.content}>x`
+        <Intro />
         <Inference />
       </div>
     </div>

@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className={classes.root}>
       <TitleBar />
-      <div className={classes.content}>x`
+      <div className={classes.content}>
         <Intro />
         <Inference />
       </div>

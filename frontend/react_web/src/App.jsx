@@ -3,6 +3,7 @@ import React from 'react'
 
 import TextInput from './textInput'
 import EmotionSlider from './EmotionSlider'
+import PrettoSlider from './slider2'
 import ChartsPage from './pieChart'
 
 import logo from './emotion_chart.png'
@@ -29,6 +30,7 @@ function App() {
         <br></br>
         <br></br>
         <EmotionSlider />
+        <PrettoSlider/>
        
       </header>
     </div>

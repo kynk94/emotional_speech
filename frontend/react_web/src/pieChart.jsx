@@ -22,8 +22,9 @@ const useStyles = makeStyles({
 export default function ChartsPage() {
   const classes = useStyles()
   const [seconds, setSeconds] = useState(0)
-  const series = useMemo(() => [10, 15, 20, 25, 30], [])
-  const labels = useMemo(() => ['Anger', 'Fear', 'Happy', 'Sad', 'Neutral'], [])
+  const series = useMemo(() => [10,10,10,10,10,10], [])
+
+  const labels = useMemo(() => ['Anger', 'Disgust','Fear', 'Happy', 'Sad', 'Neutral'], [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,7 +48,21 @@ export default function ChartsPage() {
           // dataPointSelection: handleClick
         }
       },
-      labels: labels
+      labels: labels ,
+      colors : ['#ffdb53', '#f5b1e2', '#42dbc7', '#ff9375', '#60caf1','#a8e07d' ],
+     // fill : {
+     //   type:'image',
+     //   opacity:0.85,
+        // image :{
+          //src : ['./emotion_chart.png','./total.png','./total.png','./total.png','./total.png','./total.png'],
+          //width :100,
+          //imagedHeight : 100
+     //   }
+     // },
+      stroke :{
+        width :4
+      }
+
     }
   }, [handleClick, labels])
 

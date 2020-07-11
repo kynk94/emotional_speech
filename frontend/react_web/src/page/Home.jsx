@@ -4,6 +4,7 @@ import React from 'react'
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
 import TitleBar from './titlebar/TitleBar'
+import Cardimages from './cardimages/Cardimages'
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,7 @@ export default function Home() {
       <div className={classes.content}>
         <Intro />
         <Inference />
+        <Cardimages />
       </div>
     </div>
   )

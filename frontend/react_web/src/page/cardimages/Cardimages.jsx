@@ -70,7 +70,7 @@ export default function Cardimages() {
   //render(){
   return (
     <Grid container alignItems="stretch">
-      <Grid item style={{display: 'flex'}}>
+      <Grid item style={{display: 'flex', padding:40}}>
 
         <Card className={classes.root}>
           
@@ -152,7 +152,7 @@ export default function Cardimages() {
       </Grid>
 
 
-      <Grid item style={{display: 'flex'}}>
+      <Grid item style={{display: 'flex', padding:40}}>
 
         <Card className={classes.root}>
           <CardHeader

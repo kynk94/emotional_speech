@@ -4,7 +4,8 @@ import React from 'react'
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
 import TitleBar from './titlebar/TitleBar'
-import TimeLine from './timeline/TimeLine'
+import Cardimages from './cardimages/Cardimages'
+import TimeLine from './timeline/TimeLine'      
 import IntroducePJ from './timeline/IntroducePJ'
 
 const useStyles = makeStyles({
@@ -30,7 +31,7 @@ export default function Home() {
         <Inference />
         <IntroducePJ/>
         <TimeLine/>
-       
+        <Cardimages />
       </div>
     </div>
   )

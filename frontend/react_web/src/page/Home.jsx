@@ -4,6 +4,8 @@ import React from 'react'
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
 import TitleBar from './titlebar/TitleBar'
+import TimeLine from './timeline/TimeLine'
+import IntroducePJ from './timeline/IntroducePJ'
 
 const useStyles = makeStyles({
   root: {
@@ -23,9 +25,12 @@ export default function Home() {
   return (
     <div className={classes.root}>
       <TitleBar />
-      <div className={classes.content}>x`
+      <div className={classes.content}>
         <Intro />
         <Inference />
+        <IntroducePJ/>
+        <TimeLine/>
+       
       </div>
     </div>
   )

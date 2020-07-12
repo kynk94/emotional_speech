@@ -18,9 +18,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import img1 from './all.jpg';
 import img2 from './shphoto.jpg';
+import img3 from './ms.jpg';
+import img4 from './yj.jpg';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
  
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -229,8 +232,154 @@ export default function Cardimages() {
           </Collapse>
         </Card>
       </Grid>
+
+      <Grid item style={{display: 'flex', padding:40}}>
+
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="recipe" className={classes.avatar}>
+                MS
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title="Misung Kim"
+            subheader="July 18, 2020"
+          />
+          <CardMedia
+            className={classes.media}
+            //image='aaa.png'
+            //style={{ height: "350px" }}
+            style={{flex: 1,
+              height: "300px",
+              weight: "300px",
+              resizeMode: 'contain'}}
+            src={img3}
+            component="img"
+            title="SH"
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Misung Kim
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>About me:</Typography>
+              <Typography paragraph>
+                안녕하세요
+              </Typography>
+              <Typography paragraph>
+                김미성입니다
+              </Typography>
+              <Typography paragraph>
+                
+              </Typography>
+              <Typography>
+                
+              </Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      </Grid>
+
+      <Grid item style={{display: 'flex', padding:40}}>
+
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={
+              <Avatar aria-label="recipe" className={classes.avatar}>
+                YJ
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title="Yoonjong Shin"
+            subheader="July 18, 2020"
+          />
+          <CardMedia
+            className={classes.media}
+            //image='aaa.png'
+            //style={{ height: "350px" }}
+            style={{flex: 1,
+              height: "300px",
+              weight: "300px",
+              resizeMode: 'contain'}}
+            src={img4}
+            component="img"
+            title="YJ"
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Yoonjong Shin
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>About me:</Typography>
+              <Typography paragraph>
+                안녕하세요,
+              </Typography>
+              <Typography paragraph>
+                신윤종입니다.
+              </Typography>
+              <Typography paragraph>
+                
+              </Typography>
+              <Typography>
+                
+              </Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
+      </Grid>
     </Grid>
 
   );
-  
+  //}
 }

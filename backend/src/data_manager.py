@@ -1,61 +1,47 @@
 from overrides import overrides
-from event import Event
 from event import EventType
 from event_handler import EventHandler
 
-from werkzeug.utils import secure_filename
 import os
-from flask import request, render_template
-
-import numpy as np
-
-# Keras
-from tensorflow.keras.applications.imagenet_utils import preprocess_input, decode_predictions
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-
+import pymysql
+# import ffmpeg
 
 class DataManager(EventHandler):
 
     def __init__(self, dispatcher, logger):
         super().__init__(dispatcher, logger)
-        # Model saved with Keras model.save()
-        MODEL_PATH = 'models/model_resnet.h5'
 
-        # Load your trained model
-        self.model = load_model(MODEL_PATH)  
-
-    def _model_predict(self, img_path, model):
-        img = image.load_img(img_path, target_size=(224, 224))
-
-        # Preprocessing the image
-        x = image.img_to_array(img)
-        # x = np.true_divide(x, 255)
-        x = np.expand_dims(x, axis=0)
-
-        # Be careful how your trained model deals with the input
-        # otherwise, it won't make correct prediction!
-        x = preprocess_input(x, mode='caffe')
-
-        preds = model.predict(x)
-        return preds
+        self.conn = pymysql.connect(host='127.0.0.1', user='root', password='root',
+                                    db='emo_speech', charset='utf8', port=33906)
 
     @overrides
     def handle_event(self, event):
         if event.type == EventType.DATA_ARRIVED:
-            file_path = event.payload
-            print('event.payload', event.payload)
-            
+            model_input = event.payload
+            uuid = model_input['uuid']
+            request_time = model_input['request_time']
+            emotion = model_input['emotion']
+            intensity = model_input['intensity']
+            basepath = os.path.dirname(__file__)
+            wav_path = os.path.join(basepath, 'inference', uuid, 'input.wav')
+            print('DataManager', wav_path, emotion, intensity)
 
-            # Make prediction
-            preds = self._model_predict(file_path, self.model)
+            # model inference
 
-            # Process your result for human
-            # pred_class = preds.argmax(axis=-1)            # Simple argmax
-            pred_class = decode_predictions(preds, top=1)   # ImageNet Decode
-            result = str(pred_class[0][0][1])               # Convert to string
-            event = Event(payload=result, type=EventType.RESULT_ARRIVED)
-            self.publish_event(event)
-            print(result)
-                    
-            return result
+
+            # wav -> mp3
+            # stream = ffmpeg.input('output.wav')
+            # stream = ffmpeg.hflip(stream)
+            # stream = ffmpeg.output(stream, f'{intensity}.mp3')
+            # ffmpeg.run(stream)
+
+            # Status True
+            curs = self.conn.cursor()
+            sql = """update InferenceStatus
+                set status = True
+                where uuid = %s and request_time = %s"""
+            curs.execute(sql, (uuid, request_time))
+            self.conn.commit()
+            self.conn.close()
+
+            return

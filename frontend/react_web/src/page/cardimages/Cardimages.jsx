@@ -314,7 +314,7 @@ export default function Cardimages() {
                 <MoreVertIcon />
               </IconButton>
             }
-            title="Soohyun Kim"
+            title="Yoonjong Shin"
             subheader="July 18, 2020"
           />
           <CardMedia

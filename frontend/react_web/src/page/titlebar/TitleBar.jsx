@@ -10,6 +10,9 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-around',
     height: 40
+  },
+  typography: {
+    fontFamily :'NanumSquare_acB'
   }
 })
 
@@ -18,12 +21,12 @@ export default function TitleBar() {
 
   return (
     <AppBar className={classes.appBar} position="fixed">
-      <Typography>Typo1</Typography>
-      <Typography>Typo2</Typography>
-      <Typography>Typo3</Typography>
-      <Typography>Typo4</Typography>
-      <Typography>Typo5</Typography>
-      <Typography>Typo6</Typography>
+      <Typography className={classes.typography}>Typo1</Typography>
+      <Typography className={classes.typography}>Typo2</Typography>
+      <Typography className={classes.typography}>Typo3</Typography>
+      <Typography className={classes.typography}>Typo4</Typography>
+      <Typography className={classes.typography}>Typo5</Typography>
+      <Typography className={classes.typography}>Typo6</Typography>
     </AppBar>
   )
 }

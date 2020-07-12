@@ -32,6 +32,7 @@ export default function Home() {
         <IntroducePJ/>
         <TimeLine/>
         <Cardimages />
+
       </div>
     </div>
   )

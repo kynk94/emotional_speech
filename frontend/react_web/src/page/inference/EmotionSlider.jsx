@@ -7,6 +7,9 @@ const useStyles = makeStyles({
   slider: {
     margin: '0 10px',
     width: 400
+  },
+  typograpy :{
+  fontFamily: 'NanumSquare_acB'
   }
 })
 

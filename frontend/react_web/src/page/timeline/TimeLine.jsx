@@ -1,8 +1,16 @@
 import React, {  useMemo } from 'react'
 import ApexCharts from 'react-apexcharts'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles1= makeStyles({
+  typography :{
+      //color : '#775DD0',
+      fontFamily: 'NanumSquare_acB'
+  }
+})
 
 export default function TimeLine(){
-
+const classes1 = useStyles1()
 const timeLineOption = useMemo(() => {
     return {
         series: [
@@ -86,7 +94,8 @@ const timeLineOption = useMemo(() => {
                 //+ ': ' + diff + (diff > 1 ? ' days' : ' day')
               },
               style: {
-                colors: ['#f3f4f5', '#fff']
+                colors: ['#f3f4f5', '#fff'],
+                fontFamily : 'NanumSquare_acB'
               }
             },
 
@@ -110,7 +119,7 @@ const timeLineOption = useMemo(() => {
 
 return (
     <div>
-        <ApexCharts align = 'center' options={timeLineOption.options} series={timeLineOption.series} type='rangeBar' height='500' width ='1200'></ApexCharts>
+        <ApexCharts align = 'center' className={classes1.typography} options={timeLineOption.options} series={timeLineOption.series} type='rangeBar' height='500' width ='1200'></ApexCharts>
     </div>
 )
 }

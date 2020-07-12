@@ -2,6 +2,39 @@ html {
   height: 100%;
 }
 
+@font-face {
+  font-family: 'NanumSquare_acB';
+  src : url(./fonts/NanumSquare_acB.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumSquare_acEB';
+  src : url(./fonts/NanumSquare_acEB.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumSquare_acL';
+  src : url(./fonts/NanumSquare_acL.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumSquare_acR';
+  src : url(./fonts/NanumSquare_acR.ttf)
+  format('truetype')
+}
+
+
+@font-face {
+  font-family: 'Seoul';
+  src : url(./fonts/Seoul.ttf)
+  format('truetype')
+}
+
+
+
 body {
   height: 100%;
   margin: 0;

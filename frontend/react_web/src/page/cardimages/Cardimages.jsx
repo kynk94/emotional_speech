@@ -20,7 +20,7 @@ import img1 from './all.jpg';
 import img2 from './shphoto.jpg';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import defaultExport from 'module'
+ 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -50,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 0
     }
   },
+  typography :{
+    //color : '#775DD0',
+    fontFamily: 'NanumSquare_acB'
+  }
+
 }));
 
 export default function Cardimages() {
@@ -69,7 +74,7 @@ export default function Cardimages() {
 
   //render(){
   return (
-    <Grid container alignItems="stretch">
+    <Grid container alignItems="stretch" >
       <Grid item style={{display: 'flex', padding:40}}>
 
         <Card className={classes.root}>
@@ -101,7 +106,7 @@ export default function Cardimages() {
             title="SH"
           />
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.typography}>
               Generate Emotion, 네가 원하는 대로
             </Typography>
             <Typography paragraph>
@@ -134,7 +139,7 @@ export default function Cardimages() {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph>About us:</Typography>
-              <Typography paragraph>
+              <Typography paragraph className={classes.typography}>
                 강인구 김미성 김수현 신민정 신윤종 이도연 정주원
               </Typography>
               <Typography paragraph>
@@ -154,7 +159,7 @@ export default function Cardimages() {
 
       <Grid item style={{display: 'flex', padding:40}}>
 
-        <Card className={classes.root}>
+        <Card className={classes.root} > 
           <CardHeader
             avatar={
               <Avatar aria-label="recipe" className={classes.avatar}>
@@ -182,7 +187,7 @@ export default function Cardimages() {
             title="SH"
           />
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.typography}> 
               Soohyun Kim
             </Typography>
           </CardContent>
@@ -208,10 +213,10 @@ export default function Cardimages() {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph>About me:</Typography>
-              <Typography paragraph>
+              <Typography paragraph className={classes.typography}>
                 안녕하세요
               </Typography>
-              <Typography paragraph>
+              <Typography paragraph className={classes.typography}>
                 Hi there
               </Typography>
               <Typography paragraph>

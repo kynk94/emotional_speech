@@ -7,7 +7,8 @@ import ApexCharts from 'react-apexcharts'
 
 const useStyles = makeStyles({
   typography: {
-    color: '#ffffff'
+    color: '#ffffff',
+    fontFamily: 'NanumSquare_acB'
   }
 })
 
@@ -51,7 +52,8 @@ export default function EmotionChart({ labels, onUpdate }) {
       dataLabels: {
         formatter: dataLabelFormatter,
         style: {
-          fontSize: '16px'
+          fontSize: '16px',
+          fontFamily : 'NanumSquare_acB'
         }
       },
       labels: emotions,
@@ -68,7 +70,7 @@ export default function EmotionChart({ labels, onUpdate }) {
 
   return (
     <div>
-      <Typography className={classes.typography} variant="h4">
+      <Typography className={classes.typography} variant="h4" align = 'center'>
         Pick emotion
       </Typography>
       <ApexCharts options={chartOption} series={series} type="pie" width={500} />

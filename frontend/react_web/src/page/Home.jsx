@@ -5,8 +5,7 @@ import Inference from './inference/Inference'
 import Intro from './intro/Intro'
 import TitleBar from './titlebar/TitleBar'
 import Cardimages from './cardimages/Cardimages'
-import TimeLine from './timeline/TimeLine'      
-import IntroducePJ from './timeline/IntroducePJ'
+import TimeLine from './timeline/TimeLine'
 
 const useStyles = makeStyles({
   root: {
@@ -29,10 +28,8 @@ export default function Home() {
       <div className={classes.content}>
         <Intro />
         <Inference />
-        <IntroducePJ/>
-        <TimeLine/>
+        <TimeLine />
         <Cardimages />
-
       </div>
     </div>
   )

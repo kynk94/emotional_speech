@@ -3,9 +3,9 @@ import React from 'react'
 
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
-import TitleBar from './titlebar/TitleBar'
-import Cardimages from './cardimages/Cardimages'
-import TimeLine from './timeline/TimeLine'
+import TitleBar from './titleBar/TitleBar'
+import PhotoPage from './photoPage/PhotoPage'
+import TimeLine from './timeLine/TimeLine'
 
 const useStyles = makeStyles({
   root: {
@@ -14,8 +14,7 @@ const useStyles = makeStyles({
     width: '100%'
   },
   content: {
-    marginTop: 40,
-    overflow: 'auto'
+    marginTop: 40
   }
 })
 
@@ -29,7 +28,7 @@ export default function Home() {
         <Intro />
         <Inference />
         <TimeLine />
-        <Cardimages />
+        <PhotoPage />
       </div>
     </div>
   )

@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function Inference(props) {
+export default function Inference() {
   const classes = useStyles()
   const emotionLabels = useMemo(
     () => [

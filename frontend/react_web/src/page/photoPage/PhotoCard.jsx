@@ -58,13 +58,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PhotoCard({
   avatar,
-  timeLine,
-  title,
-  imageAlt = '',
-  imageSrc,
-  expanded = false,
   contentText,
   contentRests,
+  expanded = false,
+  imageAlt = '',
+  imageSrc,
+  timeLine,
+  title,
   trailContentText,
   trailContentTitle,
   onUpdateExpanded

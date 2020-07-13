@@ -2,6 +2,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import React, { useCallback, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import uuid from 'react-uuid'
 
 import EmotionChart from './EmotionChart'
 import EmotionSlider from './EmotionSlider'
@@ -10,8 +12,8 @@ import useRecorder from './useRecorder';
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'rgba(19, 19, 19, 1)',
+    padding: '30px 0',
     width: '100%',
-    padding: '30px',
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column'
@@ -27,8 +29,18 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: '10px',
+  form: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  formRow: {
+    width: 400,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   button: {
+    width: 100,
     backgroundColor: 'rgba(41, 151, 255, 1)',
     color: '#ffffff',
     fontFamily :'NanumSquare_acB'
@@ -37,6 +49,9 @@ const useStyles = makeStyles({
 
 export default function Inference() {
   const classes = useStyles()
+  const { register, handleSubmit, getValues, watch, errors } = useForm()
+  const [fileId, setFileId] = useState(uuid())
+  const [fileName, setFileName] = useState('')
   const emotionLabels = useMemo(
     () => [
       { emotion: 'Neutral', color: '#ffdb53' },
@@ -79,6 +94,12 @@ export default function Inference() {
 
 
 
+  const handleFileChange = useCallback((event) => {
+    const filePath = event.target.value
+    setFileName(filePath)
+  }, [])
+
+  console.log(getValues('upload-file'))
   return (
     <div className={classes.root}>
       <EmotionChart labels={emotionLabels} onUpdate={handleEmotionUpdate} />
@@ -118,6 +139,27 @@ export default function Inference() {
           음성 재생
         </Button>
       </div>
+      <form className={classes.form}>
+        <input
+          hidden
+          type="file"
+          id="upload-file"
+          name="upload-file"
+          ref={register}
+          onChange={handleFileChange}
+        />
+        <div className={classes.formRow}>
+          <label htmlFor="upload-file">
+            <Button className={classes.button} varient="contained" component="span">
+              파일 선택
+            </Button>
+          </label>
+          <Typography className={classes.typography}>{fileName}</Typography>
+        </div>
+        <Button className={classes.button} variant="contained">
+          녹음하기
+        </Button>
+      </form>
     </div>
   )
 }

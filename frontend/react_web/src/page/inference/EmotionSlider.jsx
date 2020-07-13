@@ -23,14 +23,13 @@ export default function EmotionSlider({ value, onUpdate }) {
     [onUpdate]
   )
 
-  const marks = useMemo(() => [{ value: -1 }, { value: 0 }, { value: 1 }], [])
+  const marks = useMemo(() => [{ value: 0 }, { value: 0.5 }, { value: 1 }], [])
 
   return (
     <Slider
       className={classes.slider}
       marks={marks}
       max={1}
-      min={-1}
       step={0.01}
       value={value}
       onChange={handleChange}

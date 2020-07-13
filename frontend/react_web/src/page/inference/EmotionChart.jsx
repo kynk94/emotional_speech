@@ -58,9 +58,7 @@ export default function EmotionChart({ labels, onUpdate }) {
       },
       labels: emotions,
       legend: {
-        labels: {
-          colors: '#ffffff'
-        }
+        show: false
       },
       tooltip: {
         enabled: false

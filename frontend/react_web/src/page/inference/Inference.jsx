@@ -28,7 +28,8 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: '10px',
+    padding: '10px'
+  },
   form: {
     display: 'flex',
     flexDirection: 'column'

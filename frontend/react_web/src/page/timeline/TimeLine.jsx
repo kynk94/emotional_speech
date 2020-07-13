@@ -7,7 +7,7 @@ import IntroduceProject from './IntroduceProject'
 const useStyles = makeStyles({
   root: {
     width: '100%',
-    padding: '30px',
+    padding: '30px 0',
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column'

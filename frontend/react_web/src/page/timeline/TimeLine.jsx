@@ -6,9 +6,13 @@ import IntroduceProject from './IntroduceProject'
 
 const useStyles = makeStyles({
   root: {
-    padding: '30px'
+    width: '100%',
+    padding: '30px',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column'
   },
-  typography: {
+  chart: {
     fontFamily: 'NanumSquare_acB'
   }
 })
@@ -63,11 +67,6 @@ export default function TimeLine() {
 
   const chartOption = useMemo(() => {
     return {
-      chart: {
-        height: 100,
-        width: 200,
-        type: 'rangeBar'
-      },
       plotOptions: {
         bar: {
           horizontal: true,
@@ -104,14 +103,13 @@ export default function TimeLine() {
     <div className={classes.root}>
       <IntroduceProject />
       <ApexCharts
-        align="center"
-        className={classes.typography}
+        className={classes.chart}
         options={chartOption}
         series={chartSeries}
         type="rangeBar"
-        height="500"
-        width="1200"
-      ></ApexCharts>
+        height={500}
+        width={1200}
+      />
     </div>
   )
 }

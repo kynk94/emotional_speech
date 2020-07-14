@@ -1,6 +1,6 @@
+import { makeStyles } from '@material-ui/core/styles'
 import React, { useCallback, useMemo } from 'react'
 import ApexCharts from 'react-apexcharts'
-import { makeStyles } from '@material-ui/core/styles'
 
 import IntroduceProject from './IntroduceProject'
 

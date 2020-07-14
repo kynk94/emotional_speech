@@ -127,15 +127,15 @@ export default function PhotoCard({
 }
 
 PhotoCard.propTypes = {
-  avatar: PropTypes.object.isRequired,
+  avatar: PropTypes.node.isRequired,
   contentText: PropTypes.string.isRequired,
-  contentRests: PropTypes.object.isRequired,
+  contentRests: PropTypes.node,
   expanded: PropTypes.bool.isRequired,
   imageAlt: PropTypes.string.isRequired,
-  imageSrc: PropTypes.object.isRequired,
+  imageSrc: PropTypes.string.isRequired,
   timeLine: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  trailContentText: PropTypes.string.isRequired,
-  trailContentTitle: PropTypes.string.isRequired,
+  trailContentText: PropTypes.string,
+  trailContentTitle: PropTypes.string,
   onUpdateExpanded: PropTypes.func.isRequired
 }

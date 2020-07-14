@@ -33,6 +33,37 @@ html {
   format('truetype')
 }
 
+@font-face {
+  font-family: 'GrenzeGotisch-ExtraLight';
+  src : url(./fonts/GrenzeGotisch-ExtraLight.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'GrenzeGotisch-Light';
+  src : url(./fonts/GrenzeGotisch-Light.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'GrenzeGotisch-Regular';
+  src : url(./fonts/GrenzeGotisch-Regular.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'GrenzeGotisch-Thin';
+  src : url(./fonts/GrenzeGotisch-Thin.ttf)
+  format('truetype')
+}
+
+@font-face {
+  font-family: 'NanumSquare_acB';
+  src : url(./fonts/NanumSquare_acB.ttf)
+  format('truetype')
+}
+
+
 
 
 body {

@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import uuid from 'react-uuid'
+// import uuid from 'react-uuid'
 
 import EmotionChart from './EmotionChart'
 import EmotionSlider from './EmotionSlider'
@@ -32,7 +32,8 @@ const useStyles = makeStyles({
   },
   form: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    fontFamily :'NanumSquare_acB'
   },
   formRow: {
     width: 400,
@@ -51,7 +52,7 @@ const useStyles = makeStyles({
 export default function Inference() {
   const classes = useStyles()
   const { register, handleSubmit, getValues, watch, errors } = useForm()
-  const [fileId, setFileId] = useState(uuid())
+  //const [fileId, setFileId] = useState(uuid())
   const [fileName, setFileName] = useState('')
   const emotionLabels = useMemo(
     () => [
@@ -77,24 +78,6 @@ export default function Inference() {
 
   let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
 
-
-  const [src, setSrc] = useState('')
-  const hiddenFileInput = React.useRef(null)
-
-
-
-  const handleClick = event => {
-    hiddenFileInput.current.click()
-  }
-
-  const handleChange = event => {
-    const fileUploaded = event.target.files[0];
-    setSrc(event.target.value)
-    //props.handleFile(fileUploaded)
-  };
-
-
-
   const handleFileChange = useCallback((event) => {
     const filePath = event.target.value
     setFileName(filePath)
@@ -117,11 +100,6 @@ export default function Inference() {
         </Typography>
         <audio src={audioURL} controls />
 
-  
-        <Button className={classes.button}  onClick ={handleClick}>
-            파일 업로드<input  type="file" ref ={hiddenFileInput} value={src} onChange={handleChange} style={{display: 'none'}} />
-        </Button>
-       
 
         <Button className={classes.button} variant="contained" onClick={startRecording} disabled={isRecording}>
           녹음하기

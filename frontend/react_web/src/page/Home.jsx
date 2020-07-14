@@ -3,9 +3,9 @@ import React from 'react'
 
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
-import TitleBar from './titleBar/TitleBar'
+import TitleBar from './titlebar/TitleBar'
 import PhotoPage from './photoPage/PhotoPage'
-import TimeLine from './timeLine/TimeLine'
+import TimeLine from './timeline/TimeLine'
 
 const useStyles = makeStyles({
   root: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     width: '100%'
   },
   content: {
-    marginTop: 40
+    marginTop: 80
   }
 })
 

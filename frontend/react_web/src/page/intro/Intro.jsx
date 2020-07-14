@@ -14,11 +14,12 @@ const useStyles = makeStyles({
     width: '100%'
   },
   image: {
-    width: '100%'
+    width: '70%'
+    
   },
   typography: {
     position: 'absolute',
-    fontFamily : 'NanumSquare_acB'
+    fontFamily : 'NanumSquare_acL',
   }
 })
 
@@ -28,11 +29,12 @@ export default function Intro() {
     <div className={classes.root}>
       <Image className={classes.image} alt="genie" src={genie} />
       <div className={classes.typography}>
-        <Typography className ={classes.typography} style={{ position: 'absolute', top: '15vw', right: '20vw' }}>
-        Generate Emotion
+        <Typography className ={classes.typography} variant="h5" style={{ position: 'absolute', top: '10vw', right: '20vw' }}>
+
         </Typography>
-        <Typography className ={classes.typography} style={{ position: 'absolute', top: '15vw', left: '20vw' }}>
-        감정 기반 음성 변환 - 지니(Genie):Generate Emotion
+        <Typography className ={classes.typography} style={{ position: 'absolute', top: '10vw', width: '10rem',  left: '20vw' }}>
+        What will your pleasure be?
+        Let me take your order.
         </Typography>
       </div>
     </div>

@@ -11,4 +11,5 @@ class ResultManager(EventHandler):
     @overrides
     def handle_event(self, event):
         if event.type == EventType.RESULT_ARRIVED:
+            
             return

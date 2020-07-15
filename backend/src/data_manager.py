@@ -1,10 +1,10 @@
-# -*- encoding: utf-8 -*-
 from overrides import overrides
+from event import Event
 from event import EventType
 from event_handler import EventHandler
 
 import os
-import ffmpeg # wav -> mp3 변환
+import subprocess
 
 # RelGAN inference
 import glob
@@ -15,8 +15,8 @@ from model.module.model import RelGAN
 from model.module.speech_tools import *
 import model.hparams as hp
 
-#gpu = tf.config.experimental.list_physical_devices('GPU')
-#tf.config.experimental.set_memory_growth(gpu[0], True)
+gpu = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpu[0], True)
 
 class DataManager(EventHandler):
 
@@ -37,11 +37,11 @@ class DataManager(EventHandler):
         # Domain list: ['Amused', 'Angry', 'Disgusted', 'Neutral', 'Sleepy']
         emo_dict = {'Happy':0, 'Anger':1, 'Disgust':2, 'Neutral':3}
         num_dict = {0:'Happy', 1:'Anger', 2:'Disgust', 3:'Neutral'}
-        if match.isalpha():
+        if str(match).isalpha():
             return emo_dict[match]
         return num_dict[match]
 
-    def predict(self, input_path, x_atr, y_atr, alpha): # x_atr:source_label / y_atr:target_label / alpha:interpolation
+    def predict(self, uuid, input_path, x_atr, y_atr, alpha): # x_atr:source_label / y_atr:target_label / alpha:interpolation
         print('Wavs :', input_path)
         # domain attribute 생성
         # label 종류
@@ -55,20 +55,16 @@ class DataManager(EventHandler):
         labels = labels[labels != y_atr]
         z_atr = np.random.choice(labels, 1) # z는 x,y 제외 random으로
         z_labels[0] = np.identity(self.num_domains)[z_atr]
-        print('라벨생성')
 
         # interpolation
         alpha = np.ones(1) * alpha
-        print('보간생성')
 
         # wav 처리
-        wav, _ = load_wavs(input_path, sr=hp.sampling_rate)
-        print("웨이브 로드")
+        wav = load_wavs(input_path, sr=hp.sampling_rate)
         wav = wav_padding(wav, sr=hp.sampling_rate, frame_period=hp.duration)
         f0, timeaxis, sp, ap = world_decompose(wav, hp.sampling_rate, hp.duration)
-        print("월드")
-        coded_sps_A_norm, coded_sps_A_mean, coded_sps_A_std, log_f0s_mean_A, log_f0s_std_A = load_pickle(os.path.join(base_path, 'model', 'statistics', f'{self.domain_match(x_atr)}.p'))
-        coded_sps_B_norm, coded_sps_B_mean, coded_sps_B_std, log_f0s_mean_B, log_f0s_std_B = load_pickle(os.path.join(base_path, 'model', 'statistics', f'{self.domain_match(y_atr)}.p'))
+        coded_sps_A_norm, coded_sps_A_mean, coded_sps_A_std, log_f0s_mean_A, log_f0s_std_A = load_pickle(os.path.join(self.basepath, 'model', 'statistics', f'{self.domain_match(x_atr)}.p'))
+        coded_sps_B_norm, coded_sps_B_mean, coded_sps_B_std, log_f0s_mean_B, log_f0s_std_B = load_pickle(os.path.join(self.basepath, 'model', 'statistics', f'{self.domain_match(y_atr)}.p'))
 
         f0s_mean_A = np.exp(log_f0s_mean_A)
         f0s_mean_B = np.exp(log_f0s_mean_B)
@@ -85,7 +81,6 @@ class DataManager(EventHandler):
         coded_sp_transposed = coded_sp.T
         coded_sp_norm = (coded_sp_transposed - coded_sps_A_mean) / coded_sps_A_std
         coded_sp_norm = np.array([coded_sp_norm])
-        print('웨이브처리')
 
         # model input
         inputs = [coded_sp_norm, coded_sp_norm, coded_sp_norm, coded_sp_norm, x_labels, y_labels, z_labels, alpha]
@@ -108,8 +103,8 @@ class DataManager(EventHandler):
         if not os.path.exists(directory):
                 os.makedirs(directory)
         # wav 저장
-        librosa.output.write_wav(os.path.join(self.basepath, 'inference', uuid, self.domain_match(y_atr), f'{alpha}.wav'), wav_transformed, hp.sampling_rate)
-        return os.path.join(self.basepath, 'inference', uuid, self.domain_match(y_atr), f'{alpha}.wav')
+        librosa.output.write_wav(os.path.join(self.basepath, 'inference', uuid, self.domain_match(y_atr), f'{alpha[0]}.wav'), wav_transformed, hp.sampling_rate)
+        return os.path.join(self.basepath, 'inference', uuid, self.domain_match(y_atr), f'{alpha[0]}.wav')
 
     @overrides
     def handle_event(self, event):
@@ -123,16 +118,18 @@ class DataManager(EventHandler):
             print('DataManager', wav_path, emotion, intensity)
 
             # model inference
-            model_output = self.predict(wav_path, 3, self.domain_match(emotion), intensity) # 시작은 neutral
+            model_output = self.predict(uuid, wav_path, 3, self.domain_match(emotion), intensity) # 시작은 neutral
             print(model_output)
 
             # wav -> mp3
-            stream = ffmpeg.input(model_output)
-            stream = ffmpeg.hflip(stream)
-            stream = ffmpeg.output(stream, f'{intensity}.mp3')
-            ffmpeg.run(stream)
+            command = ['ffmpeg']
+            command += ['-i', model_output]
+            command += ['-acodec', 'libmp3lame']
+            command += [os.path.join(self.basepath, 'inference', uuid, emotion, f'{intensity}.mp3')]
+            
+            subprocess.run(command, shell=True, check=True)
 
             # server에서 받을 이벤트 생성 (RESULT_ARRIVED)
-            event = Event(payload={'uuid':uuid, 'request_time':request_time}, type=EventType.RESULT_ARRIVED)
-            self.publish_event(event)
+            result_event = Event(payload={'uuid':uuid, 'request_time':request_time}, type=EventType.RESULT_ARRIVED)
+            self.publish_event(result_event)
             return 'result arrived'

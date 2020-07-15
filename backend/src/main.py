@@ -32,7 +32,8 @@ def main():
 
     server.subscribe_events([EventType.DATA_ARRIVED,
                              EventType.RESULT_ARRIVED])
-    data_manager.subscribe_events([EventType.DATA_ARRIVED])
+    data_manager.subscribe_events([EventType.DATA_ARRIVED,
+                             EventType.RESULT_ARRIVED])
 
     try:
         while True:

@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 from threading import Thread
 from event import Event
 from event import EventType
@@ -27,7 +26,7 @@ class Server(EventHandler):
         self._run_server()
 
         self.conn = pymysql.connect(host='127.0.0.1', user='root', password='root',
-                                    db='emo_speech', charset='utf8', port=33906)
+                                    db='emo_speech', charset='utf8', port=3306)
         
         self.basepath = os.path.dirname(__file__)
 
@@ -46,18 +45,20 @@ class Server(EventHandler):
     def _handle_data_arrived(self, event):
         return
 
-    def _handle_result_arrived(self):
+    def _handle_result_arrived(self, event):
         # Status True
         keys = event.payload
         uuid = keys['uuid']
         request_time = keys['request_time']
+
+        # DB status=true
         curs = self.conn.cursor()
         sql = """update InferenceStatus
             set status = True
             where uuid = %s and request_time = %s"""
         curs.execute(sql, (uuid, request_time))
         self.conn.commit()
-        self.conn.close()
+        # self.conn.close()
 
     def handle_data(self):
         uuid = request.form.get(key='uuid', type=str)
@@ -73,7 +74,7 @@ class Server(EventHandler):
                 values (%s, %s, %s, %s, %s)"""
         curs.execute(sql, (uuid, request_time, False, emotion, intensity))
         self.conn.commit()
-        self.conn.close()
+        # self.conn.close()
 
         # 파일 저장
         directory = os.path.join(self.basepath, 'inference', uuid)
@@ -101,7 +102,6 @@ class Server(EventHandler):
         status = result[2] # 0:False, 1:True
         emotion = result[3]
         intensity = result[4]
-        print('상태', status, intensity)
         self.conn.commit()
         self.conn.close()
 

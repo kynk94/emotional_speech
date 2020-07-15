@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 import librosa
 import numpy as np
 import pyworld
@@ -10,10 +9,7 @@ def load_wavs(input_path, sr):
     '''
     wav 읽어오기
     '''
-    print("wav 읽어볼까")
-    print(input_path, sr)
     wav, _ = librosa.load(input_path, sr=sr)
-    print("리브로사로드")
     wav *= 1. / max(0.01, np.max(np.abs(wav)))
     #wav = wav.astype(np.double)
 

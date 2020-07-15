@@ -6,7 +6,7 @@ n_frames = 128
 duration = 5.0
 output_size = 256
 seed = 65535
-num_domains = 5 # 추가한값 지금 num_domain 5 맞나??
+num_domains = 5
 
 # Training parameters
 num_iterations = 50001

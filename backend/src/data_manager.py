@@ -25,7 +25,7 @@ class DataManager(EventHandler):
 
         self.basepath = os.path.dirname(__file__)
 
-        self.num_domains = hp.num_domains  # num_domains hp로 넘기면 안되나??
+        self.num_domains = hp.num_domains 
         self.model = RelGAN(self.num_domains)
         # 모델 weight 불러오기
         self.latest = tf.train.latest_checkpoint(os.path.join(self.basepath, 'model', 'weight', hp.weights_dir))

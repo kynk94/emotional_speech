@@ -58,14 +58,14 @@ const useStyles = makeStyles({
 export default function Inference() {
   const classes = useStyles()
   const { audioURL, isRecording, startRecording, stopRecording } = useRecorder()
-  const [playSrc, setPlaySrc] = useState()
-  const [resultSrc, setResultSrc] = useState()
+  const [playSrc, setPlaySrc] = useState('')
+  const [resultSrc, setResultSrc] = useState('')
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const [requestCounter, setRequestCounter] = useState(0)
   const [requestSended, setRequestSended] = useState(false)
   const [requestTime, setRequestTime] = useState()
   const [fileId, setFileId] = useState('')
-  const [fileName, setFileName] = useState()
+  const [fileName, setFileName] = useState('')
   const fileRef = useRef()
   const emotionLabels = useMemo(
     () => [
@@ -119,7 +119,7 @@ export default function Inference() {
   }, [])
 
   const handleDelete = useCallback(() => {
-    setPlaySrc()
+    setPlaySrc('')
     setFileName()
   }, [])
 

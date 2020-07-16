@@ -153,7 +153,12 @@ export default function Inference() {
         url: 'http://223.194.32.71:5000/result',
         data: formData
       }).then((response) => {
+        // response가 false 일 경우에는 리턴하도록 처리할 것
+        // file일 경우에는 setResultSrc
         const file = response.data
+        if (!file) {
+          return
+        }
         setResultSrc(file)
         setRequestSended(false)
         setRequestCounter(0)

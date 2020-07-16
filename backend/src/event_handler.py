@@ -31,7 +31,7 @@ class EventHandler(ABC, EnforceOverrides):
             self.logger.error('Wrong event data')
         self._dispatcher.send(event=event,
                               signal=event.type)
-        self.logger.info(f'Event published: {event}')
+        # self.logger.info(f'Event published: {event}')
 
     @final
     def run_event_loop(self):

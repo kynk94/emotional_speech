@@ -26,25 +26,38 @@ class Server(EventHandler):
         self._run_server()
 
         self.conn = pymysql.connect(host='127.0.0.1', user='root', password='root',
-                                    db='emo_speech', charset='utf8', port=33906)
+                                    db='emo_speech', charset='utf8', port=3306)
+        
+        self.basepath = os.path.dirname(__file__)
 
     def _run_server(self):
-        self._server_thread = Thread(target=self._app.run,
-                                     daemon=True)
+        self._server_thread = Thread(target=self._app.run, args=['0.0.0.0'], daemon=True)
         self._server_thread.start()
 
     @overrides
     def handle_event(self, event):
         if event.type == EventType.DATA_ARRIVED:
-            pass
+            self._handle_data_arrived(event)
         elif event.type == EventType.RESULT_ARRIVED:
-            pass
+            self._handle_result_arrived(event)
 
     def _handle_data_arrived(self, event):
         return
 
-    def _handle_result_arrived(self):
-        return
+    def _handle_result_arrived(self, event):
+        # Status True
+        keys = event.payload
+        uuid = keys['uuid']
+        request_time = keys['request_time']
+
+        # DB status=true
+        curs = self.conn.cursor()
+        sql = """update InferenceStatus
+            set status = True
+            where uuid = %s and request_time = %s"""
+        curs.execute(sql, (uuid, request_time))
+        self.conn.commit()
+        # self.conn.close()
 
     def handle_data(self):
         uuid = request.form.get(key='uuid', type=str)
@@ -60,18 +73,17 @@ class Server(EventHandler):
                 values (%s, %s, %s, %s, %s)"""
         curs.execute(sql, (uuid, request_time, False, emotion, intensity))
         self.conn.commit()
-        self.conn.close()
+        # self.conn.close()
 
         # 파일 저장
-        basepath = os.path.dirname(__file__)
-        directory = os.path.join(basepath, 'inference', uuid)
+        directory = os.path.join(self.basepath, 'inference', uuid)
         if not os.path.exists(directory):
                 os.makedirs(directory)
         file_path = os.path.join(
-                    basepath, 'inference', uuid, 'input.wav')
+                    self.basepath, 'inference', uuid, 'input.wav')
         speech.save(file_path)
 
-        # 모델 data_manager 이벤트 발생
+        # data_manager의 모델에서 받을 이벤트 생성(DATA_ARRIVED)
         event = Event(payload={'uuid':uuid, 'request_time':request_time, 'emotion':emotion, 'intensity':intensity}, type=EventType.DATA_ARRIVED)
         self.publish_event(event)
         return 'data arrived'
@@ -89,16 +101,14 @@ class Server(EventHandler):
         status = result[2] # 0:False, 1:True
         emotion = result[3]
         intensity = result[4]
-        print('상태', status, intensity)
         self.conn.commit()
         self.conn.close()
 
         # False이면
         if status==0:
             return False
-        else: # True이면
-            # 파일 경로
-            basepath = os.path.dirname(__file__)
-            file_path = os.path.join(basepath, 'inference', uuid, emotion, f'{intensity}.mp3')
-            print(file_path)
-            return send_file(file_path, attachment_filename='result.mp3')
+        # True이면
+        # 파일 경로
+        file_path = os.path.join(self.basepath, 'inference', uuid, emotion, f'{intensity}.mp3')
+        print(file_path)
+        return send_file(file_path, attachment_filename='result.mp3')

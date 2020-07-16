@@ -10,7 +10,6 @@ import yaml
 from event import EventType
 from server import Server
 from data_manager import DataManager
-from result_manager import ResultManager
 
 load_dotenv()
 FLASK_APP = Flask(__name__)
@@ -30,12 +29,11 @@ def main():
 
     server = Server(dispatcher, logger, FLASK_APP)
     data_manager = DataManager(dispatcher, logger)
-    result_manager = ResultManager(dispatcher, logger)
 
     server.subscribe_events([EventType.DATA_ARRIVED,
                              EventType.RESULT_ARRIVED])
-    data_manager.subscribe_events([EventType.DATA_ARRIVED])
-    result_manager.subscribe_events([EventType.RESULT_ARRIVED])
+    data_manager.subscribe_events([EventType.DATA_ARRIVED,
+                             EventType.RESULT_ARRIVED])
 
     try:
         while True:

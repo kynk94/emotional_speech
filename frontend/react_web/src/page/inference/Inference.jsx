@@ -59,7 +59,11 @@ export default function Inference() {
   const classes = useStyles()
   const { audioURL, isRecording, startRecording, stopRecording } = useRecorder()
   const [playSrc, setPlaySrc] = useState()
+  const [resultSrc, setResultSrc] = useState()
   const [buttonDisabled, setButtonDisabled] = useState(false)
+  const [requestCounter, setRequestCounter] = useState(0)
+  const [requestSended, setRequestSended] = useState(false)
+  const [requestTime, setRequestTime] = useState()
   const [fileId, setFileId] = useState('')
   const [fileName, setFileName] = useState()
   const fileRef = useRef()
@@ -79,8 +83,10 @@ export default function Inference() {
 
   const handleData = useCallback(() => {
     const formData = new FormData()
+    const currentDate = new Date()
+    setRequestTime(currentDate)
     formData.set('uuid', fileId)
-    formData.set('request_time', new Date())
+    formData.set('request_time', currentDate)
     formData.set('file', playSrc)
     formData.set('emotion', emotion)
     formData.set('intensity', intensity)
@@ -88,7 +94,10 @@ export default function Inference() {
       method: 'post',
       url: 'http://223.194.32.71:5000/speech',
       data: formData
-    }).then((response) => console.log(response))
+    }).then((response) => {
+      setRequestSended(true)
+      console.log(response)
+    })
   }, [emotion, fileId, playSrc, intensity])
 
   const handleEmotionUpdate = useCallback((newEmotion) => {
@@ -129,6 +138,33 @@ export default function Inference() {
     }
   }, [playSrc])
 
+  useEffect(() => {
+    if (!requestSended) {
+      return
+    }
+    setInterval(() => {
+      setRequestCounter(requestCounter + 1)
+      const formData = new FormData()
+      formData.set('uuid', fileId)
+      formData.set('request_time', requestTime)
+      axios({
+        method: 'get',
+        url: 'http://223.194.32.71:5000/result',
+        data: formData
+      }).then((response) => {
+        const file = response.data
+        setResultSrc(file)
+        setRequestSended(false)
+        setRequestCounter(0)
+      })
+    }, 1000)
+
+    if (requestCounter > 10) {
+      setRequestSended(false)
+      setRequestCounter(0)
+      alert('에러 발생')
+    }
+  }, [fileId, requestCounter, requestSended, requestTime])
   return (
     <div className={classes.root}>
       <EmotionChart labels={emotionLabels} onUpdate={handleEmotionUpdate} />
@@ -194,6 +230,7 @@ export default function Inference() {
       >
         전송
       </Button>
+      <audio src={resultSrc} controls />
     </div>
   )
 }

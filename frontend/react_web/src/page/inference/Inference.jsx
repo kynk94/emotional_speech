@@ -110,9 +110,10 @@ export default function Inference() {
 
   const handleFileChange = useCallback((event) => {
     const file = event.target.files[0]
-    if (!file) {
+    if (!file || file.type !== 'audio/wav') {
       return
     }
+    console.log(file)
     setPlaySrc(URL.createObjectURL(file))
     setFileId(uuid())
     setFileName(file.name)
@@ -179,6 +180,7 @@ export default function Inference() {
           hidden
           disabled={buttonDisabled || isRecording}
           type="file"
+          accept=".wav"
           id="upload-file"
           name="upload-file"
           ref={fileRef}

@@ -31,8 +31,7 @@ class Server(EventHandler):
         self.basepath = os.path.dirname(__file__)
 
     def _run_server(self):
-        self._server_thread = Thread(target=self._app.run,
-                                     daemon=True)
+        self._server_thread = Thread(target=self._app.run, args=['0.0.0.0'], daemon=True)
         self._server_thread.start()
 
     @overrides

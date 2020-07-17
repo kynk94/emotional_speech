@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useRef } from 'react'
-// import { Link } from 'react-router-dom'
+import React from 'react'
 
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'

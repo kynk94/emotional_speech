@@ -12,9 +12,12 @@ import EmotionSlider from './EmotionSlider'
 import useRecorder from './useRecorder'
 import { useEffect } from 'react'
 
+import imgBack from '../../assets/back_image.jpg'
+
 const useStyles = makeStyles({
   root: {
-    backgroundColor: 'rgba(19, 19, 19, 1)',
+    //backgroundColor: 'rgba(19, 19, 19, 1)',
+    backgroundImage: `url(${imgBack})`,
     padding: '30px 0',
     width: '100%',
     alignItems: 'center',
@@ -46,6 +49,7 @@ const useStyles = makeStyles({
   },
   button: {
     width: 100,
+    height: 50,
     backgroundColor: 'rgba(41, 151, 255, 1)',
     color: '#ffffff',
     fontFamily: 'NanumSquare_acB'
@@ -55,14 +59,16 @@ const useStyles = makeStyles({
   }
 })
 
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 export default function Inference() {
   const classes = useStyles()
   const { audioURL, isRecording, startRecording, stopRecording } = useRecorder()
   const [playSrc, setPlaySrc] = useState('')
   const [resultSrc, setResultSrc] = useState('')
   const [buttonDisabled, setButtonDisabled] = useState(false)
-  const [requestCounter, setRequestCounter] = useState(0)
-  const [requestSended, setRequestSended] = useState(false)
   const [requestTime, setRequestTime] = useState()
   const [fileId, setFileId] = useState('')
   const [fileName, setFileName] = useState('')
@@ -81,24 +87,51 @@ export default function Inference() {
   const [emotion, setEmotion] = useState(emotionLabels[0].emotion)
   const [intensity, setIntensity] = useState(0)
 
+  const handleRequestGet = useCallback(async () => {
+    for (var i = 0; i < 10; i++) {
+      await sleep(1000)
+      setTimeout(() => {
+        axios({
+          method: 'get',
+          url: 'http://localhost:5000/result',
+          params: {
+            'uuid': fileId,
+            'request_time': requestTime
+          }
+        }).then((response) => {
+          // response가 false 일 경우에는 리턴하도록 처리할 것
+          // file일 경우에는 setResultSrc
+          const file = response.data
+          if (!file) {
+            return
+          }
+          setResultSrc(file)
+        })
+      }, 1000)
+    }
+  }, [fileId, requestTime])
+
   const handleData = useCallback(() => {
     const formData = new FormData()
     const currentDate = new Date()
     setRequestTime(currentDate)
-    formData.set('uuid', fileId)
-    formData.set('request_time', currentDate)
-    formData.set('file', playSrc)
-    formData.set('emotion', emotion)
-    formData.set('intensity', intensity)
+    formData.append('uuid', fileId)
+    formData.append('request_time', currentDate)
+    formData.append('speech', playSrc)
+    formData.append('emotion', emotion)
+    formData.append('intensity', intensity)
     axios({
       method: 'post',
-      url: 'http://223.194.32.71:5000/speech',
-      data: formData
+      url: 'http://localhost:5000/speech',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     }).then((response) => {
-      setRequestSended(true)
+      handleRequestGet()
       console.log(response)
     })
-  }, [emotion, fileId, playSrc, intensity])
+  }, [emotion, fileId, handleRequestGet, playSrc, intensity])
 
   const handleEmotionUpdate = useCallback((newEmotion) => {
     setEmotion(newEmotion)
@@ -113,7 +146,6 @@ export default function Inference() {
     if (!file || file.type !== 'audio/wav') {
       return
     }
-    console.log(file)
     setPlaySrc(URL.createObjectURL(file))
     setFileId(uuid())
     setFileName(file.name)
@@ -139,38 +171,6 @@ export default function Inference() {
     }
   }, [playSrc])
 
-  useEffect(() => {
-    if (!requestSended) {
-      return
-    }
-    setInterval(() => {
-      setRequestCounter(requestCounter + 1)
-      const formData = new FormData()
-      formData.set('uuid', fileId)
-      formData.set('request_time', requestTime)
-      axios({
-        method: 'get',
-        url: 'http://223.194.32.71:5000/result',
-        data: formData
-      }).then((response) => {
-        // response가 false 일 경우에는 리턴하도록 처리할 것
-        // file일 경우에는 setResultSrc
-        const file = response.data
-        if (!file) {
-          return
-        }
-        setResultSrc(file)
-        setRequestSended(false)
-        setRequestCounter(0)
-      })
-    }, 1000)
-
-    if (requestCounter > 10) {
-      setRequestSended(false)
-      setRequestCounter(0)
-      alert('에러 발생')
-    }
-  }, [fileId, requestCounter, requestSended, requestTime])
   return (
     <div className={classes.root}>
       <EmotionChart labels={emotionLabels} onUpdate={handleEmotionUpdate} />
@@ -203,8 +203,6 @@ export default function Inference() {
             </Button>
           </label>
           <Typography className={classes.typography}>{fileName}</Typography>
-        </div>
-        <div className={classes.formRow}>
           <Button
             className={classes.button}
             variant="contained"
@@ -221,22 +219,22 @@ export default function Inference() {
           >
             중지
           </Button>
-        </div>
-        <div className={classes.formRow}>
-          <audio src={playSrc} controls />
           <IconButton className={classes.iconButton} onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </div>
+        <div className={classes.formRow}>
+          <audio src={playSrc} controls />
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={handleData}
+            disabled={!playSrc}
+          >
+            전송
+          </Button>
+        </div>
       </form>
-      <Button
-        className={classes.button}
-        variant="contained"
-        onClick={handleData}
-        disabled={!playSrc}
-      >
-        전송
-      </Button>
       <audio src={resultSrc} controls />
     </div>
   )

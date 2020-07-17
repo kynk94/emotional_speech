@@ -135,7 +135,7 @@ export default function PhotoPage() {
         imageSrc={imgIG}
         timeLine="July 18, 2020"
         title="Ingu Kang"
-        trailContentText=""
+        trailContentText="github.com/kynk94"
         trailContentTitle="안녕하세요, 강인구입니다"
         onUpdateExpanded={handleExpandClick}
       />

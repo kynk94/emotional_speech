@@ -62,7 +62,7 @@ class Server(EventHandler):
     def handle_data(self):
         uuid = request.form.get(key='uuid', type=str)
         request_time = request.form.get(key='request_time')
-        speech = request.files['speech']
+        speech = request.form.get(key='speech')
         emotion = request.form.get(key='emotion', type=str)
         intensity = request.form.get(key='intensity', type=float)
         print(uuid, request_time, emotion, intensity)

@@ -66,6 +66,7 @@ export default function PhotoCard({
   timeLine,
   title,
   trailContentText,
+  trailContentText2,
   trailContentTitle,
   onUpdateExpanded
 }) {
@@ -118,6 +119,7 @@ export default function PhotoCard({
             <CardContent className={classes.trailContent}>
               <Typography paragraph>{trailContentTitle}</Typography>
               <Typography paragraph>{trailContentText}</Typography>
+              <Typography paragraph>{trailContentText2}</Typography>             
             </CardContent>
           )}
         </Collapse>

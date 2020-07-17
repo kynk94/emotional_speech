@@ -4,14 +4,13 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
 import axios from 'axios'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { format } from 'date-fns'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import uuid from 'react-uuid'
 
 import EmotionChart from './EmotionChart'
 import EmotionSlider from './EmotionSlider'
 import useRecorder from './useRecorder'
-import { useEffect } from 'react'
-
 import imgBack from '../../assets/back_image.jpg'
 
 const useStyles = makeStyles({
@@ -60,7 +59,7 @@ const useStyles = makeStyles({
 })
 
 const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
+  return new Promise((resolve) => setTimeout(resolve, milliseconds))
 }
 
 export default function Inference() {
@@ -69,7 +68,9 @@ export default function Inference() {
   const [playSrc, setPlaySrc] = useState('')
   const [resultSrc, setResultSrc] = useState('')
   const [buttonDisabled, setButtonDisabled] = useState(false)
+  const [requestPosted, setRequestPosted] = useState(false)
   const [requestTime, setRequestTime] = useState()
+  const [inputFile, setInputFile] = useState()
   const [fileId, setFileId] = useState('')
   const [fileName, setFileName] = useState('')
   const fileRef = useRef()
@@ -88,41 +89,35 @@ export default function Inference() {
   const [intensity, setIntensity] = useState(0)
 
   const handleRequestGet = useCallback(async () => {
-    var file = null
     for (var i = 0; i < 10; i++) {
-      await sleep(1000)
-      if (file) {
-        return
-      }
-      setTimeout(() => {
-        axios({
-          method: 'get',
-          url: 'http://localhost:5000/result',
-          params: {
-            'uuid': fileId,
-            'request_time': requestTime
-          }
-        }).then((response) => {
-          // response가 false 일 경우에는 리턴하도록 처리할 것
-          // file일 경우에는 setResultSrc
-          file = response.data
-          if (!file) {
-            return
-          }
-          setResultSrc(file)
+      var data = null
+      await sleep(2000)
+      if (data && data.type === "audio/mpeg") break
+      axios({
+        method: 'get',
+        url: 'http://localhost:5000/result',
+        params: {
+          uuid: fileId,
+          request_time: requestTime
+        },
+        responseType: 'blob'
+      }).then((response) => {
+        data = response.data
+        if (!data || (data.type !== "audio/mpeg")) {
           return
-        })
-      }, 1000)
+        }
+        setResultSrc(URL.createObjectURL(new Blob([data])))
+      })
     }
   }, [fileId, requestTime])
 
   const handleData = useCallback(() => {
     const formData = new FormData()
-    const currentDate = new Date()
+    const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
     setRequestTime(currentDate)
     formData.append('uuid', fileId)
     formData.append('request_time', currentDate)
-    formData.append('speech', playSrc)
+    formData.append('speech', inputFile)
     formData.append('emotion', emotion)
     formData.append('intensity', intensity)
     axios({
@@ -133,10 +128,10 @@ export default function Inference() {
         'Content-Type': 'multipart/form-data'
       }
     }).then((response) => {
-      handleRequestGet()
       console.log(response)
+      setRequestPosted(true)
     })
-  }, [emotion, fileId, handleRequestGet, playSrc, intensity])
+  }, [emotion, fileId, inputFile, intensity])
 
   const handleEmotionUpdate = useCallback((newEmotion) => {
     setEmotion(newEmotion)
@@ -151,6 +146,7 @@ export default function Inference() {
     if (!file || file.type !== 'audio/wav') {
       return
     }
+    setInputFile(file)
     setPlaySrc(URL.createObjectURL(file))
     setFileId(uuid())
     setFileName(file.name)
@@ -165,6 +161,13 @@ export default function Inference() {
     if (audioURL) {
       setFileId(uuid())
       setPlaySrc(audioURL)
+      axios({
+        method: 'get',
+        url: audioURL,
+        responseType: 'blob'
+      }).then((response) => {
+        setInputFile(response.data)
+      })
     }
   }, [audioURL])
 
@@ -175,6 +178,13 @@ export default function Inference() {
       setButtonDisabled(false)
     }
   }, [playSrc])
+
+  useEffect(() => {
+    if(requestPosted) {
+      setRequestPosted(false)
+      handleRequestGet()
+    }
+  }, [handleRequestGet, requestPosted])
 
   return (
     <div className={classes.root}>

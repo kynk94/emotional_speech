@@ -15,8 +15,8 @@ import imgBack from '../../assets/back_image.jpg'
 
 const useStyles = makeStyles({
   root: {
-    //backgroundColor: 'rgba(19, 19, 19, 1)',
-    backgroundImage: `url(${imgBack})`,
+    backgroundColor: 'rgba(19, 19, 19, 1)',
+    //backgroundImage: `url(${imgBack})`,
     padding: '30px 0',
     width: '100%',
     alignItems: 'center',

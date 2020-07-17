@@ -6,6 +6,7 @@ import React, { useCallback, useMemo } from 'react'
 const useStyles = makeStyles({
   slider: {
     margin: '0 10px',
+    color: '#ffffff',
     width: 400
   },
   typograpy :{

@@ -95,7 +95,7 @@ export default function Inference() {
       if (data && data.type === "audio/mpeg") break
       axios({
         method: 'get',
-        url: 'http://localhost:5000/result',
+        url: 'http://223.194.32.71:5000/result',
         params: {
           uuid: fileId,
           request_time: requestTime
@@ -122,7 +122,7 @@ export default function Inference() {
     formData.append('intensity', intensity)
     axios({
       method: 'post',
-      url: 'http://localhost:5000/speech',
+      url: 'http://223.194.32.71:5000/speech',
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data'

@@ -9,6 +9,31 @@ import EmotionChart from './EmotionChart'
 import EmotionSlider from './EmotionSlider'
 import useRecorder from './useRecorder';
 
+
+import axios from 'axios'
+
+// // get : 서버에서 데이터를 가져와서 보여줄때
+// axios.get('/result',{
+//   uuid:,
+//   request_time:
+
+// })
+// .then( response => { console.log(response) } )
+// .catch( response => { console.log(response) } );
+
+// // post: 서버상에 데이터 값을 보냄 
+// axios.post('/speech',{
+//   uuid:,
+//   request_time:,
+//   datetime:,
+//   wav:,
+//   emotion:,
+//   intensity:
+//   })
+//   .then(response => {console.log(response)})
+//   .catch(response => {console.log(response)});
+
+
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'rgba(19, 19, 19, 1)',
@@ -93,22 +118,21 @@ export default function Inference() {
         </Typography>
         <EmotionSlider value={strength} onUpdate={handleStrengthUpdate} />
       </div>
-      <div className={classes.buttons}>
 
+      <div className={classes.buttons} >
         <Typography className={classes.typography} >
-        Input:  
+        Input
         </Typography>
         <audio src={audioURL} controls />
-
-
         <Button className={classes.button} variant="contained" onClick={startRecording} disabled={isRecording}>
           녹음하기
         </Button>
         <Button className={classes.button} variant="contained" onClick={stopRecording} disabled={!isRecording}>
           녹음 중지
         </Button>
-
       </div>
+
+
       <div className={classes.buttons}>
         <Typography className={classes.typography} >
           Output: 
@@ -127,6 +151,8 @@ export default function Inference() {
           ref={register}
           onChange={handleFileChange}
         />
+
+
         <div className={classes.formRow}>
           <label htmlFor="upload-file">
             <Button className={classes.button} varient="contained" component="span">

@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   typography: {
     position: 'absolute',
     fontFamily : 'NanumSquare_acL',
+    
   }
 })
 
@@ -32,9 +33,9 @@ export default function Intro() {
         <Typography className ={classes.typography} variant="h5" style={{ position: 'absolute', top: '10vw', right: '20vw' }}>
 
         </Typography>
-        <Typography className ={classes.typography} style={{ position: 'absolute', top: '10vw', width: '10rem',  left: '20vw' }}>
-        What will your pleasure be?
-        Let me take your order.
+        <Typography className ={classes.typography} style={{ position: 'absolute', top: '10vw', width: '25vw',  left: '17vw', fontSize:'calc(16px + 6 * ((100vw - 320px) / 680))'}}>
+        <p>What emotion do you want?</p>
+        <p>Let me take your order.</p>
         </Typography>
       </div>
     </div>

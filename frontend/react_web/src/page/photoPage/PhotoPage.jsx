@@ -4,10 +4,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import React, { useCallback, useMemo, useState } from 'react'
 
 import imgGenie from '../../assets/0618.jpg'
-import imgSH from '../../assets/shphoto.jpg'
+import imgSH from '../../assets/sh2.jpg'
 import imgMS from '../../assets/ms.jpg'
 import imgYJ from '../../assets/yj.jpg'
 import PhotoCard from './PhotoCard'
+import imgJW from '../../assets/jw.jpg'
+import imgMJ from '../../assets/mj.png'
+import imgIG from '../../assets/ig.png'
+import imgDY from '../../assets/dy.jpg'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,10 +37,13 @@ export default function PhotoPage() {
 
   const faces = useMemo(() => {
     const faceUrls = [
-      'http://i.pravatar.cc/300?img=1',
-      'http://i.pravatar.cc/300?img=2',
-      'http://i.pravatar.cc/300?img=3',
-      'http://i.pravatar.cc/300?img=4'
+      imgMJ,
+      imgMS,
+      imgSH,
+      imgYJ,
+      imgJW,
+      imgIG,
+      imgDY
     ]
     return faceUrls.map((faceUrl) => (
       <Avatar className={classes.faceavatar} key={faceUrl} src={faceUrl} />
@@ -65,8 +73,8 @@ export default function PhotoPage() {
         imageSrc={imgSH}
         timeLine="July 18, 2020"
         title="Soohyun Kim"
-        trailContentText="안녕하세요"
-        trailContentTitle="About me:"
+        trailContentText="shkim@vt.edu"
+        trailContentTitle="안녕하세요, 김수현입니다"
         onUpdateExpanded={handleExpandClick}
       />
       <PhotoCard
@@ -77,8 +85,8 @@ export default function PhotoPage() {
         imageSrc={imgMS}
         timeLine="July 18, 2020"
         title="Misung Kim"
-        trailContentText="안녕하세요, 김미성입니다"
-        trailContentTitle="About me:"
+        trailContentText="https://github.com/MiSungKim"
+        trailContentTitle="pinklike23@gmail.com"
         onUpdateExpanded={handleExpandClick}
       />
       <PhotoCard
@@ -89,10 +97,60 @@ export default function PhotoPage() {
         imageSrc={imgYJ}
         timeLine="July 18, 2020"
         title="Yoonjong Shin"
-        trailContentText="안녕하세요, 신윤종입니다"
-        trailContentTitle="About me:"
+        trailContentText="github.com/yoonjong12"
+        trailContentText2="감정을 잃어버렸습니다..."
+        trailContentTitle="yjs7658@gmail.com"
         onUpdateExpanded={handleExpandClick}
       />
-    </Grid>
+      <PhotoCard
+        avatar="JW"
+        contentText="Juwon Jung"
+        expanded={expanded}
+        imageAlt="JW"
+        imageSrc={imgJW}
+        timeLine="July 18, 2020"
+        title="Juwon Jung"
+        trailContentText=""
+        trailContentTitle="안녕하세요, 정주원입니다"
+        onUpdateExpanded={handleExpandClick}
+      />
+      <PhotoCard
+        avatar="MJ"
+        contentText="Minjung Shin"
+        expanded={expanded}
+        imageAlt="MJ"
+        imageSrc={imgMJ}
+        timeLine="July 18, 2020"
+        title="Minjung Shin"
+//        trailContentText="안녕하세요, 신민정입니다"
+        trailContentText="https://github.com/minjung-s"
+        trailContentTitle="smj139052@naver.com"
+        onUpdateExpanded={handleExpandClick}
+      />
+      <PhotoCard
+        avatar="IG"
+        contentText="Ingu Kang"
+        expanded={expanded}
+        imageAlt="IG"
+        imageSrc={imgIG}
+        timeLine="July 18, 2020"
+        title="Ingu Kang"
+        trailContentText=""
+        trailContentTitle="안녕하세요, 강인구입니다"
+        onUpdateExpanded={handleExpandClick}
+      />
+       <PhotoCard
+        avatar="DY"
+        contentText="Doyeon Lee"
+        expanded={expanded}
+        imageAlt="DY"
+        imageSrc={imgDY}
+        timeLine="July 18, 2020"
+        title="Doyeon Lee"
+        trailContentText="https://github.com/omocomo"
+        trailContentTitle="omocomo@naver.com"
+        onUpdateExpanded={handleExpandClick}
+      />
+   </Grid>
   )
 }

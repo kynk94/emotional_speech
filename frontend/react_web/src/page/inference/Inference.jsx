@@ -1,38 +1,16 @@
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
-// import uuid from 'react-uuid'
+import DeleteIcon from '@material-ui/icons/Delete'
+import axios from 'axios'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import uuid from 'react-uuid'
 
 import EmotionChart from './EmotionChart'
 import EmotionSlider from './EmotionSlider'
-import useRecorder from './useRecorder';
-
-
-import axios from 'axios'
-
-// // get : 서버에서 데이터를 가져와서 보여줄때
-// axios.get('/result',{
-//   uuid:,
-//   request_time:
-
-// })
-// .then( response => { console.log(response) } )
-// .catch( response => { console.log(response) } );
-
-// // post: 서버상에 데이터 값을 보냄 
-// axios.post('/speech',{
-//   uuid:,
-//   request_time:,
-//   datetime:,
-//   wav:,
-//   emotion:,
-//   intensity:
-//   })
-//   .then(response => {console.log(response)})
-//   .catch(response => {console.log(response)});
-
+import useRecorder from './useRecorder'
+import { useEffect } from 'react'
 
 const useStyles = makeStyles({
   root: {
@@ -45,8 +23,7 @@ const useStyles = makeStyles({
   },
   typography: {
     color: '#ffffff',
-    fontFamily :'NanumSquare_acB'
-  
+    fontFamily: 'NanumSquare_acB'
   },
   buttons: {
     width: '700px',
@@ -58,10 +35,11 @@ const useStyles = makeStyles({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    fontFamily :'NanumSquare_acB'
+    fontFamily: 'NanumSquare_acB'
   },
   formRow: {
     width: 400,
+    paddingBottom: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -70,15 +48,25 @@ const useStyles = makeStyles({
     width: 100,
     backgroundColor: 'rgba(41, 151, 255, 1)',
     color: '#ffffff',
-    fontFamily :'NanumSquare_acB'
+    fontFamily: 'NanumSquare_acB'
+  },
+  iconButton: {
+    color: '#ffffff'
   }
 })
 
 export default function Inference() {
   const classes = useStyles()
-  const { register, handleSubmit, getValues, watch, errors } = useForm()
-  //const [fileId, setFileId] = useState(uuid())
+  const { audioURL, isRecording, startRecording, stopRecording } = useRecorder()
+  const [playSrc, setPlaySrc] = useState('')
+  const [resultSrc, setResultSrc] = useState('')
+  const [buttonDisabled, setButtonDisabled] = useState(false)
+  const [requestCounter, setRequestCounter] = useState(0)
+  const [requestSended, setRequestSended] = useState(false)
+  const [requestTime, setRequestTime] = useState()
+  const [fileId, setFileId] = useState('')
   const [fileName, setFileName] = useState('')
+  const fileRef = useRef()
   const emotionLabels = useMemo(
     () => [
       { emotion: 'Neutral', color: '#ffdb53' },
@@ -91,80 +79,165 @@ export default function Inference() {
     []
   )
   const [emotion, setEmotion] = useState(emotionLabels[0].emotion)
-  const [strength, setStrength] = useState(0)
+  const [intensity, setIntensity] = useState(0)
+
+  const handleData = useCallback(() => {
+    const formData = new FormData()
+    const currentDate = new Date()
+    setRequestTime(currentDate)
+    formData.set('uuid', fileId)
+    formData.set('request_time', currentDate)
+    formData.set('file', playSrc)
+    formData.set('emotion', emotion)
+    formData.set('intensity', intensity)
+    axios({
+      method: 'post',
+      url: 'http://223.194.32.71:5000/speech',
+      data: formData
+    }).then((response) => {
+      setRequestSended(true)
+      console.log(response)
+    })
+  }, [emotion, fileId, playSrc, intensity])
 
   const handleEmotionUpdate = useCallback((newEmotion) => {
     setEmotion(newEmotion)
   }, [])
 
   const handleStrengthUpdate = useCallback((newStrength) => {
-    setStrength(newStrength)
+    setIntensity(newStrength)
   }, [])
-
-  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
 
   const handleFileChange = useCallback((event) => {
-    const filePath = event.target.value
-    setFileName(filePath)
+    const file = event.target.files[0]
+    if (!file || file.type !== 'audio/wav') {
+      return
+    }
+    console.log(file)
+    setPlaySrc(URL.createObjectURL(file))
+    setFileId(uuid())
+    setFileName(file.name)
   }, [])
 
-  console.log(getValues('upload-file'))
+  const handleDelete = useCallback(() => {
+    setPlaySrc('')
+    setFileName()
+  }, [])
+
+  useEffect(() => {
+    if (audioURL) {
+      setFileId(uuid())
+      setPlaySrc(audioURL)
+    }
+  }, [audioURL])
+
+  useEffect(() => {
+    if (playSrc) {
+      setButtonDisabled(true)
+    } else {
+      setButtonDisabled(false)
+    }
+  }, [playSrc])
+
+  useEffect(() => {
+    if (!requestSended) {
+      return
+    }
+    setInterval(() => {
+      setRequestCounter(requestCounter + 1)
+      const formData = new FormData()
+      formData.set('uuid', fileId)
+      formData.set('request_time', requestTime)
+      axios({
+        method: 'get',
+        url: 'http://223.194.32.71:5000/result',
+        data: formData
+      }).then((response) => {
+        // response가 false 일 경우에는 리턴하도록 처리할 것
+        // file일 경우에는 setResultSrc
+        const file = response.data
+        if (!file) {
+          return
+        }
+        setResultSrc(file)
+        setRequestSended(false)
+        setRequestCounter(0)
+      })
+    }, 1000)
+
+    if (requestCounter > 10) {
+      setRequestSended(false)
+      setRequestCounter(0)
+      alert('에러 발생')
+    }
+  }, [fileId, requestCounter, requestSended, requestTime])
   return (
     <div className={classes.root}>
       <EmotionChart labels={emotionLabels} onUpdate={handleEmotionUpdate} />
       <div>
-        <Typography className={classes.typography} variant="h6" align ='center'>
-          {emotion} Strength : {strength}
+        <Typography className={classes.typography} variant="h6" align="center">
+          {emotion} Strength : {intensity}
         </Typography>
-        <EmotionSlider value={strength} onUpdate={handleStrengthUpdate} />
-      </div>
-
-      <div className={classes.buttons} >
-        <Typography className={classes.typography} >
-        Input
-        </Typography>
-        <audio src={audioURL} controls />
-        <Button className={classes.button} variant="contained" onClick={startRecording} disabled={isRecording}>
-          녹음하기
-        </Button>
-        <Button className={classes.button} variant="contained" onClick={stopRecording} disabled={!isRecording}>
-          녹음 중지
-        </Button>
-      </div>
-
-
-      <div className={classes.buttons}>
-        <Typography className={classes.typography} >
-          Output: 
-        </Typography>
-        <audio src={audioURL} controls />
-        <Button className={classes.button} variant="contained" >
-          음성 재생
-        </Button>
+        <EmotionSlider value={intensity} onUpdate={handleStrengthUpdate} />
       </div>
       <form className={classes.form}>
         <input
           hidden
+          disabled={buttonDisabled || isRecording}
           type="file"
+          accept=".wav"
           id="upload-file"
           name="upload-file"
-          ref={register}
+          ref={fileRef}
           onChange={handleFileChange}
         />
-
-
         <div className={classes.formRow}>
           <label htmlFor="upload-file">
-            <Button className={classes.button} varient="contained" component="span">
+            <Button
+              className={classes.button}
+              disabled={buttonDisabled || isRecording}
+              varient="contained"
+              component="span"
+            >
               파일 선택
             </Button>
           </label>
           <Typography className={classes.typography}>{fileName}</Typography>
         </div>
-        <Button className={classes.button} variant="contained">
-          녹음하기
-        </Button>
+        <div className={classes.formRow}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={startRecording}
+            disabled={buttonDisabled || isRecording}
+          >
+            녹음
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={stopRecording}
+            disabled={buttonDisabled || !isRecording}
+          >
+            중지
+          </Button>
+        </div>
+        <div className={classes.formRow}>
+          <audio src={playSrc} controls />
+          <IconButton className={classes.iconButton} onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </div>
       </form>
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={handleData}
+        disabled={!playSrc}
+      >
+        전송
+      </Button>
+      <audio src={resultSrc} controls />
     </div>
   )
 }

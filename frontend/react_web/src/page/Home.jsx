@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 import React, { useRef } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 import Inference from './inference/Inference'
 import Intro from './intro/Intro'
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 export default function Home() {
   const classes = useStyles()
   //const focusName = useState('intro')
-  const ref = useRef()
+  //const ref = useRef()
 
   // const handleFocus = useCallback((event) => {
   //   event.preventDefault()
@@ -45,10 +45,10 @@ export default function Home() {
     <div className={classes.root}>
       <TitleBar />
       <div className={classes.content}>
-        <Link to='intro'><Intro /></Link>
-        <Link to='inference'><Inference /></Link>
-        <Link to='timeline'><TimeLine /></Link>
-        <Link to='photopage'><PhotoPage /></Link>
+        <Intro />
+        <Inference />
+        <TimeLine />
+        <PhotoPage />
       </div>
     </div>
   )

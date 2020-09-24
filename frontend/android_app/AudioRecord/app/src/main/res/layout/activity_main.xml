@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="시작을 눌러 녹음할까요?"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:fontFamily="@font/lottemartdreambold"
+        android:textSize="20sp"
+        android:id="@+id/recordLbl"
+        android:textColor="@color/darkpurple"/>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/content"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_gravity="bottom|center_horizontal"
+            app:rb_color="#E7B9E9"
+            app:rb_duration="2000"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="5">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/center_image"
+                android:src="@drawable/record_icon_colored" />
+        </com.skyfishjy.library.RippleBackground>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:fontFamily="@font/lottemartdreambold"
+                android:textSize="18sp"
+                android:textColor="@color/darkpurple"
+                android:id="@+id/recordTime"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="bottom|center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/record_button"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="시작"
+            android:id="@+id/recordBtn"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:background="@drawable/record_button"
+            android:layout_width="155dp"
+            android:layout_height="wrap_content"
+            android:text="종료"
+            android:id="@+id/stopBtn"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="320dp"
+            android:text="감정 선택"
+            android:id="@+id/emotionLbl"
+            android:background="@drawable/record_button"
+            android:onClick="showDialog"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="320dp"
+            android:text="정도 조절"
+            android:id="@+id/intensityLbl"
+            android:background="@drawable/record_button"
+            android:onClick="showVolumeDialog"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/uplaodBtn"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/record_button"
+            android:text="업로드"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

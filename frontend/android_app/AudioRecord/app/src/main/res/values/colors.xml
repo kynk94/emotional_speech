@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 타이틀바 -->
+    <color name="colorPrimary">#008577</color>
+    <!-- 상태바 하늘색으로 -->
+    <color name="colorPrimaryDark">#94BCEE</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="darkpurple">#730F83</color>
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Genie</string>
+    <string name="emotion_selection">선택한 감정: %s</string>
+    <string name="intensity_selection">선택한 감정의 정도: %.1f</string>
+</resources>

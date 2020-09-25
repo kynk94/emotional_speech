@@ -13,7 +13,7 @@ llvmlite==0.32.1
 matplotlib
 pysoundfile
 tqdm
-tensorflow-gpu==2.2.0
+tensorflow-gpu==2.2.1
 tensorflow-addons
 progressbar2
 ffmpeg
